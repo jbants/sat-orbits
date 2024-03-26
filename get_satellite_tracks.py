@@ -5,7 +5,8 @@ import requests
 
 def downloadTLE(NORAD_ID):
     """
-    Downloads the Two-Line Elements (TLE) data for a given NORAD ID from Celestrak.
+    Downloads the Two-Line Elements (TLE) data for a given NORAD ID from Celestrak
+    and appends it to a text file.
     
     Args:
         NORAD_ID (int): The NORAD ID of the satellite.
@@ -15,13 +16,13 @@ def downloadTLE(NORAD_ID):
     
     os.makedirs(path, exist_ok=True)
 
-    filename = f"{path}{NORAD_ID}.txt"
+    filename = f"{path}_eo_sats.txt"
     response = requests.get(url)
     if response.content.decode("utf-8") == "No GP data found":
         print(f"***** No TLE data found for NORAD ID: {NORAD_ID}")
         return    
-    with open(filename, "wb") as file:
-        file.write(response.content)
+    with open(filename, "a") as file:
+        file.write(response.content.decode("utf-8") + "\n")
 
 def read_norad_ids_from_csv(file_path):
     """
